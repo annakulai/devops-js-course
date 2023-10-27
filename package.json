@@ -7,7 +7,8 @@
     "commitlint": "commitlint --edit",
     "prepare": "husky install",
     "lint": "shellcheck --severity=error src/**/**/*.sh",
-    "prettier": "prettier --write './src/**/**/*.sh'"
+    "prettier": "prettier --write './src/**/**/*.sh'",
+    "lint:shell": "shellcheck $(find module_* lab_*/*.sh -type f -name '*.sh')"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,28 @@
+{
+  "name": "devops-js-course",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "commitlint": "commitlint --edit",
+    "prepare": "husky install",
+    "lint": "shellcheck --severity=error src/**/**/*.sh",
+    "prettier": "prettier --write './src/**/**/*.sh'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run prettier"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.0.0",
+    "@commitlint/config-conventional": "^18.0.0",
+    "husky": "^8.0.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-sh": "^0.13.1",
+    "shellcheck": "^2.2.0"
+  }
+}

@@ -123,10 +123,28 @@ promptData() {
 
 promptData
 
-result=$(jq "del(.metadata) | .pipeline.version += 1 | .pipeline.stages[0].actions[0].configuration.Branch = [\"$BRANCH\"] | .pipeline.stages[0].actions[0].configuration.Owner = [\"$OWNER\"] | .pipeline.stages[0].actions[0].configuration.PollForSourceChanges = [\"$POLL_FOR_SOURCE_CHANGES\"] | .pipeline.stages[0].actions[0].configuration.Repo = [\"$REPO"\"] $FILE)
+result=$(jq "del(.metadata) | .pipeline.version += 1" $FILE)
 
 echo $result | jq > $OUTPUT_FILE
+
+if ! [ -z "$BRANCH" ]; then
+  jq '.pipeline.stages[0].actions[0].configuration.Branch = '\"${BRANCH}\"'' "${OUTPUT_FILE}" > "tmp.json" && mv "tmp.json" "${OUTPUT_FILE}"
+fi
+
+if ! [ -z "$OWNER" ]; then
+  jq '.pipeline.stages[0].actions[0].configuration.Owner = '\"${OWNER}\"'' "${OUTPUT_FILE}" > "tmp.json" && mv "tmp.json" "${OUTPUT_FILE}"
+fi
+
+if ! [ -z "$POLL_FOR_SOURCE_CHANGES" ]; then
+  jq '.pipeline.stages[0].actions[0].configuration.PollForSourceChanges = '\"${POLL_FOR_SOURCE_CHANGES}\"'' "${OUTPUT_FILE}" > "tmp.json" && mv "tmp.json" "${OUTPUT_FILE}"
+fi
+
+if ! [ -z "$REPO" ]; then
+  jq '.pipeline.stages[0].actions[0].configuration.Repo = '\"${REPO}\"'' "${OUTPUT_FILE}" > "tmp.json" && mv "tmp.json" "${OUTPUT_FILE}"
+fi
 
 if ! [ -z "$BUILD_CONFIGURATION" ]; then
   jq '.pipeline.stages |= map( if .name == "QualityGate" or .name == "Build" then ( .actions[].configuration.EnvironmentVariables |= (fromjson | map(if .name == "BUILD_CONFIGURATION" then .value = '\"${BUILD_CONFIGURATION}\"' else . end) | tostring) ) else . end )' "${OUTPUT_FILE}" > "tmp.json" && mv "tmp.json" "${OUTPUT_FILE}"
 fi
+
+echo 'Changes saved!'

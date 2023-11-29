@@ -1,3 +1,4 @@
 node_modules
 app
 shop-angular-cloudfront
+.DS_Store

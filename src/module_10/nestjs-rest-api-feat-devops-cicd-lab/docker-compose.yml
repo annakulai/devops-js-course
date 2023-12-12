@@ -1,0 +1,13 @@
+version: "1.0"
+services:
+  app:
+    image: docker.io/annakulai/devops-js
+    container_name: devops-js
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
